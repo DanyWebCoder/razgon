@@ -460,7 +460,7 @@ function drawGraph(){
     let showColor = null;
     let minDist = 40;
     
-    if (ptDl) {
+    if (ptDl && ptDl.t <= hoverT) {
       const yDl = Y(Math.max(ptDl.v, 0.5));
       const distDl = Math.abs(yDl - hoverY);
       if (distDl < minDist) {
@@ -470,7 +470,7 @@ function drawGraph(){
       }
     }
     
-    if (ptUl) {
+    if (ptUl && ptUl.t <= hoverT) {
       const yUl = Y(Math.max(ptUl.v, 0.5));
       const distUl = Math.abs(yUl - hoverY);
       if (distUl < minDist) {
