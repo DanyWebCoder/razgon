@@ -387,10 +387,10 @@ function getClosestPoint(arr, t) {
 function handleGraphHover(e) {
   if (!series.dl.length && !series.ul.length) return;
   const rect = cv.getBoundingClientRect();
-  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-  const x = clientX - rect.left;
-  const y = clientY - rect.top;
+  const touch = e.touches ? e.touches[0] : e;
+  if (!touch) return;
+  const x = touch.clientX - rect.left;
+  const y = touch.clientY - rect.top;
   
   const w = cv.clientWidth;
   const padL = 46, padR = 14;
@@ -458,7 +458,7 @@ function drawGraph(){
     
     let showSeries = null;
     let showColor = null;
-    let minDist = Infinity;
+    let minDist = 40;
     
     if (ptDl) {
       const yDl = Y(Math.max(ptDl.v, 0.5));
