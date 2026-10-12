@@ -20,31 +20,36 @@
   --body:'Golos Text',system-ui,sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
+html, body {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
 html{color-scheme:dark}
-body{font-family:var(--body);background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;max-width:100vw;
+body{font-family:var(--body);background:var(--bg);color:var(--txt);min-height:100vh;
   background-image:radial-gradient(900px 480px at 50% -8%,rgba(47,230,168,.09),transparent 60%),radial-gradient(700px 420px at 88% 112%,rgba(255,167,43,.05),transparent 60%);}
 body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:linear-gradient(rgba(110,140,180,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(110,140,180,.05) 1px,transparent 1px);
   background-size:46px 46px;
   -webkit-mask-image:radial-gradient(ellipse 95% 85% at 50% 15%,#000 35%,transparent 100%);
   mask-image:radial-gradient(ellipse 95% 85% at 50% 15%,#000 35%,transparent 100%);}
-main{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 12px 56px}
+main{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 12px 56px;width:100%}
 .topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0 10px;flex-wrap:wrap}
 .logo{font-family:var(--disp);font-weight:800;font-size:23px;letter-spacing:.05em;display:flex;align-items:center;gap:11px}
 .logo svg{filter:drop-shadow(0 0 9px rgba(47,230,168,.65))}
 .logo small{display:block;font-family:var(--body);font-weight:500;font-size:10.5px;color:var(--mut);letter-spacing:.22em;text-transform:uppercase;margin-top:2px}
-.chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{font-family:var(--mono);font-size:11.5px;color:var(--mut);border:1px solid var(--line);background:rgba(13,20,32,.75);padding:6px 12px;border-radius:999px;display:flex;align-items:center;gap:8px}
-.chip b{color:var(--txt);font-weight:500}
+.chips{display:flex;gap:8px;flex-wrap:wrap;min-width:0}
+.chip{font-family:var(--mono);font-size:11.5px;color:var(--mut);border:1px solid var(--line);background:rgba(13,20,32,.75);padding:6px 12px;border-radius:999px;display:flex;align-items:center;gap:8px;min-width:0}
+.chip b{color:var(--txt);font-weight:500;word-break:break-all;overflow-wrap:break-word}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--dim);flex:none}
 .dot.ok{background:var(--teal);box-shadow:0 0 8px var(--teal);animation:pulse 2s infinite}
 @keyframes pulse{50%{opacity:.45}}
 .cockpit{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:18px;margin-top:12px}
-.side{display:flex;flex-direction:column;gap:14px}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
 .bottom{display:grid;grid-template-columns:1fr;gap:18px;margin-top:18px}
 @media(max-width:960px){.cockpit,.bottom{grid-template-columns:1fr}}
 .panel{background:linear-gradient(180deg,#0e1624,#0b111c);border:1px solid var(--line);border-radius:16px;padding:22px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.03),0 12px 34px rgba(0,0,0,.35);animation:rise .55s both}
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03),0 12px 34px rgba(0,0,0,.35);animation:rise .55s both;width:100%}
 .panel:nth-child(2){animation-delay:.08s}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}}
 .panel h3{font-family:var(--disp);font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);display:flex;align-items:center;gap:9px;margin-bottom:15px}
@@ -91,11 +96,11 @@ main{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 12px 5
 .btn-ghost{border:1px solid var(--line2);background:transparent;color:var(--mut);padding:10px 18px;font-family:var(--mono);font-size:12px;cursor:pointer;border-radius:9px;transition:.2s}
 .btn-ghost:hover{color:var(--txt);border-color:var(--teal);background:rgba(47,230,168,.06)}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.tile{background:linear-gradient(180deg,#0f1726,#0c1320);border:1px solid var(--line);border-radius:12px;padding:14px 16px 13px;position:relative;overflow:hidden;transition:transform .2s,border-color .3s}
+.tile{background:linear-gradient(180deg,#0f1726,#0c1320);border:1px solid var(--line);border-radius:12px;padding:14px 16px 13px;position:relative;overflow:hidden;transition:transform .2s,border-color .3s;min-width:0}
 .tile:hover{transform:translateY(-2px);border-color:var(--line2)}
 .tile::before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:3px;background:var(--ac);border-radius:2px;box-shadow:0 0 10px var(--ac)}
 .tile-label{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);font-weight:600}
-.tile-val{font-family:var(--mono);font-size:29px;font-weight:700;margin-top:6px;font-variant-numeric:tabular-nums}
+.tile-val{font-family:var(--mono);font-size:29px;font-weight:700;margin-top:6px;font-variant-numeric:tabular-nums;word-break:break-all}
 .tile-unit{font-size:12px;color:var(--dim);margin-left:4px;font-weight:400}
 .tile-bar{height:3px;background:#152030;border-radius:2px;margin-top:11px;overflow:hidden}
 .tile-bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .5s ease}
@@ -111,15 +116,15 @@ main{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 12px 5
 .info-row{display:flex;justify-content:space-between;gap:12px;padding:8.5px 0;border-bottom:1px dashed #1a2939;font-size:13px}
 .info-row:last-child{border:none}
 .info-row span{color:var(--mut);flex:none}
-.info-row b{font-family:var(--mono);font-weight:500;font-size:12.5px;text-align:right;word-break:break-word}
+.info-row b{font-family:var(--mono);font-weight:500;font-size:12.5px;text-align:right;word-break:break-all;overflow-wrap:break-word}
 .graph-panel{margin-top:18px}
 .legend{display:flex;gap:16px;font-family:var(--mono);font-size:11.5px;color:var(--mut)}
 .legend i{display:inline-block;width:16px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
-#graph{width:100%;height:195px;display:block}
+#graph{width:100%;max-width:100%;height:195px;display:block;touch-action:pan-y}
 .table-wrapper{width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px}
-table{width:100%;table-layout:fixed;border-collapse:collapse;font-family:var(--mono);font-size:11.5px}
-th{font-family:var(--body);text-align:left;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:600;padding:6px 4px;border-bottom:1px solid var(--line)}
-td{padding:8px 4px;border-bottom:1px solid #131f2e;word-break:break-word;line-height:1.3;vertical-align:middle}
+table{width:100%;min-width:0;table-layout:fixed;border-collapse:collapse;font-family:var(--mono);font-size:11.5px}
+th{font-family:var(--body);text-align:left;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:600;padding:6px 4px;border-bottom:1px solid var(--line);word-break:break-word}
+td{padding:8px 4px;border-bottom:1px solid #131f2e;word-break:break-all;overflow-wrap:break-word;line-height:1.3;vertical-align:middle}
 tr{animation:rowIn .4s both}
 @keyframes rowIn{from{opacity:0;transform:translateY(-4px)}}
 td.dl b{color:var(--teal)}
@@ -361,6 +366,44 @@ const series={dl:[],ul:[]};
 let testT0=0,RUN=null;
 const YT=1600,YB=.4;
 const ly=v=>{const t=(Math.log10(Math.max(v,YB))-Math.log10(YB))/(Math.log10(YT)-Math.log10(YB));return Math.min(1,Math.max(0,t));};
+
+let hoverT = null;
+function getClosestPoint(arr, t) {
+  if (!arr || !arr.length) return null;
+  let closest = arr[0];
+  let minDiff = Math.abs(arr[0].t - t);
+  for (let i = 1; i < arr.length; i++) {
+    const diff = Math.abs(arr[i].t - t);
+    if (diff < minDiff) {
+      minDiff = diff;
+      closest = arr[i];
+    }
+  }
+  return closest;
+}
+
+function handleGraphHover(e) {
+  if (!series.dl.length && !series.ul.length) return;
+  const rect = cv.getBoundingClientRect();
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const x = clientX - rect.left;
+  
+  const w = cv.clientWidth;
+  const padL = 46, padR = 14;
+  const iw = w - padL - padR;
+  const xmax = Math.max(18, (RUN ? RUN.graphT : 18));
+  
+  let t = ((x - padL) / iw) * xmax;
+  t = Math.max(0, Math.min(xmax, t));
+  hoverT = t;
+  drawGraph();
+}
+
+cv.addEventListener('mousemove', handleGraphHover);
+cv.addEventListener('touchmove', handleGraphHover, {passive: true});
+cv.addEventListener('mouseleave', () => { hoverT = null; drawGraph(); });
+cv.addEventListener('touchend', () => { hoverT = null; drawGraph(); });
+
 function drawGraph(){
   const dpr=window.devicePixelRatio||1;
   const w=cv.clientWidth,h=cv.clientHeight;
@@ -368,9 +411,9 @@ function drawGraph(){
   cv.width=w*dpr;cv.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
   ctx.clearRect(0,0,w,h);
   const padL=46,padR=14,padT=10,padB=22,iw=w-padL-padR,ih=h-padT-padB;
-  const xmax=Math.max(18,(RUN&&RUN.graphT)||0);
+  const xmax=Math.max(18,(RUN&&RUN.graphT)||18);
   const X=t=>padL+iw*t/xmax,Y=v=>padT+ih*(1-ly(v));
-  ctx.font='10px JetBrains Mono';ctx.lineWidth=1;
+  ctx.font='10px JetBrains Mono, monospace';ctx.lineWidth=1;
   [1,5,10,50,100,500,1000].forEach(v=>{
     const y=Y(v);
     ctx.strokeStyle='#16222f';ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(w-padR,y);ctx.stroke();
@@ -393,11 +436,58 @@ function drawGraph(){
   };
   plot(series.dl,'#2fe6a8','rgba(47,230,168,.07)');
   plot(series.ul,'#ffa72b','rgba(255,167,43,.07)');
+  
+  if (hoverT !== null) {
+    const hx = X(hoverT);
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(hx, padT);
+    ctx.lineTo(hx, padT + ih);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    const drawDot = (arr, col) => {
+      const pt = getClosestPoint(arr, hoverT);
+      if (!pt) return;
+      const px = X(pt.t);
+      const py = Y(Math.max(pt.v, 0.5));
+      
+      ctx.beginPath();
+      ctx.arc(px, py, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#070b12';
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = col;
+      ctx.stroke();
+
+      ctx.font = 'bold 11px JetBrains Mono, monospace';
+      const text = `${pt.v.toFixed(1)} Мбит/с`;
+      const textW = ctx.measureText(text).width;
+      let tx = px + 10;
+      if (tx + textW > w - padR) tx = px - textW - 10;
+      
+      ctx.fillStyle = '#0d1420';
+      ctx.fillRect(tx - 4, py - 12, textW + 8, 18);
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(tx - 4, py - 12, textW + 8, 18);
+      
+      ctx.fillStyle = col;
+      ctx.fillText(text, tx, py + 3);
+    };
+
+    drawDot(series.dl, '#2fe6a8');
+    drawDot(series.ul, '#ffa72b');
+  }
+
   if(!series.dl.length&&!series.ul.length){
     ctx.fillStyle='#3c4f66';ctx.font='12px Golos Text';
     ctx.fillText('График появится во время теста',padL+12,h/2+4);
   }
 }
+
 function pushSample(k,v){
   const t=(performance.now()-testT0)/1000;
   series[k].push({t,v});
