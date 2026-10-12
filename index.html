@@ -368,6 +368,8 @@ const YT=1600,YB=.4;
 const ly=v=>{const t=(Math.log10(Math.max(v,YB))-Math.log10(YB))/(Math.log10(YT)-Math.log10(YB));return Math.min(1,Math.max(0,t));};
 
 let hoverT = null;
+let hoverY = null;
+
 function getClosestPoint(arr, t) {
   if (!arr || !arr.length) return null;
   let closest = arr[0];
@@ -386,7 +388,9 @@ function handleGraphHover(e) {
   if (!series.dl.length && !series.ul.length) return;
   const rect = cv.getBoundingClientRect();
   const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
   const x = clientX - rect.left;
+  const y = clientY - rect.top;
   
   const w = cv.clientWidth;
   const padL = 46, padR = 14;
@@ -396,13 +400,14 @@ function handleGraphHover(e) {
   let t = ((x - padL) / iw) * xmax;
   t = Math.max(0, Math.min(xmax, t));
   hoverT = t;
+  hoverY = y;
   drawGraph();
 }
 
 cv.addEventListener('mousemove', handleGraphHover);
 cv.addEventListener('touchmove', handleGraphHover, {passive: true});
-cv.addEventListener('mouseleave', () => { hoverT = null; drawGraph(); });
-cv.addEventListener('touchend', () => { hoverT = null; drawGraph(); });
+cv.addEventListener('mouseleave', () => { hoverT = null; hoverY = null; drawGraph(); });
+cv.addEventListener('touchend', () => { hoverT = null; hoverY = null; drawGraph(); });
 
 function drawGraph(){
   const dpr=window.devicePixelRatio||1;
@@ -437,7 +442,7 @@ function drawGraph(){
   plot(series.dl,'#2fe6a8','rgba(47,230,168,.07)');
   plot(series.ul,'#ffa72b','rgba(255,167,43,.07)');
   
-  if (hoverT !== null) {
+  if (hoverT !== null && hoverY !== null) {
     const hx = X(hoverT);
     ctx.strokeStyle = 'rgba(255,255,255,0.2)';
     ctx.lineWidth = 1;
@@ -448,38 +453,60 @@ function drawGraph(){
     ctx.stroke();
     ctx.setLineDash([]);
 
-    const drawDot = (arr, col) => {
-      const pt = getClosestPoint(arr, hoverT);
-      if (!pt) return;
-      const px = X(pt.t);
-      const py = Y(Math.max(pt.v, 0.5));
+    const ptDl = getClosestPoint(series.dl, hoverT);
+    const ptUl = getClosestPoint(series.ul, hoverT);
+    
+    let showSeries = null;
+    let showColor = null;
+    let minDist = Infinity;
+    
+    if (ptDl) {
+      const yDl = Y(Math.max(ptDl.v, 0.5));
+      const distDl = Math.abs(yDl - hoverY);
+      if (distDl < minDist) {
+        minDist = distDl;
+        showSeries = ptDl;
+        showColor = '#2fe6a8';
+      }
+    }
+    
+    if (ptUl) {
+      const yUl = Y(Math.max(ptUl.v, 0.5));
+      const distUl = Math.abs(yUl - hoverY);
+      if (distUl < minDist) {
+        minDist = distUl;
+        showSeries = ptUl;
+        showColor = '#ffa72b';
+      }
+    }
+    
+    if (showSeries) {
+      const px = X(showSeries.t);
+      const py = Y(Math.max(showSeries.v, 0.5));
       
       ctx.beginPath();
       ctx.arc(px, py, 5, 0, Math.PI * 2);
       ctx.fillStyle = '#070b12';
       ctx.fill();
       ctx.lineWidth = 2;
-      ctx.strokeStyle = col;
+      ctx.strokeStyle = showColor;
       ctx.stroke();
 
       ctx.font = 'bold 11px JetBrains Mono, monospace';
-      const text = `${pt.v.toFixed(1)} Мбит/с`;
+      const text = `${showSeries.v.toFixed(1)} Мбит/с`;
       const textW = ctx.measureText(text).width;
       let tx = px + 10;
       if (tx + textW > w - padR) tx = px - textW - 10;
       
       ctx.fillStyle = '#0d1420';
       ctx.fillRect(tx - 4, py - 12, textW + 8, 18);
-      ctx.strokeStyle = col;
+      ctx.strokeStyle = showColor;
       ctx.lineWidth = 1;
       ctx.strokeRect(tx - 4, py - 12, textW + 8, 18);
       
-      ctx.fillStyle = col;
+      ctx.fillStyle = showColor;
       ctx.fillText(text, tx, py + 3);
-    };
-
-    drawDot(series.dl, '#2fe6a8');
-    drawDot(series.ul, '#ffa72b');
+    }
   }
 
   if(!series.dl.length&&!series.ul.length){
